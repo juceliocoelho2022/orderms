@@ -1,4 +1,4 @@
-package entity;
+package tech.DevJucelio.btgpactual.orderms.entity;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;

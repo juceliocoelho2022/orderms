@@ -1,4 +1,4 @@
-package config;
+package tech.DevJucelio.btgpactual.orderms.config;
 
 import org.springframework.amqp.core.Declarable;
 import org.springframework.amqp.core.Queue;
