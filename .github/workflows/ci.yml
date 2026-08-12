@@ -1,0 +1,52 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:8
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: change-me
+        ports:
+          - 27017:27017
+
+      rabbitmq:
+        image: rabbitmq:3.13-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+
+    env:
+      MONGO_HOST: localhost
+      MONGO_PORT: 27017
+      MONGO_DATABASE: btgpactualdb
+      MONGO_AUTH_DB: admin
+      MONGO_USERNAME: admin
+      MONGO_PASSWORD: change-me
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+          cache-dependency-path: orderms/pom.xml
+
+      - name: Build and test
+        run: mvn --batch-mode --no-transfer-progress -f orderms/pom.xml clean verify
